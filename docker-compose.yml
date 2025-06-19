@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  duplicator_9401:
+    image: http-duplicator:latest
+    container_name: duplicator_9401
+    environment:
+      - LISTEN_PORT=9401
+      - TARGET1=10.49.77.153:9501
+      - TARGET2=10.49.77.153:9502
+      - FORWARD_IF_RESP_TARGET=10.49.77.153:9503
+      - LOG_DIR=/logs
+    ports:
+      - "9401:9401"
+    volumes:
+      - /var/log/duplicator_logs/9401:/logs
+
+  duplicator_9402:
+    image: http-duplicator:latest
+    container_name: duplicator_9402
+    environment:
+      - LISTEN_PORT=9402
+      - TARGET1=10.49.77.154:9511
+      - TARGET2=10.49.77.154:9512
+      - FORWARD_IF_RESP_TARGET=10.49.77.154:9513
+      - LOG_DIR=/logs
+    ports:
+      - "9402:9402"
+    volumes:
+      - /var/log/duplicator_logs/9402:/logs
+
+  duplicator_9403:
+    image: http-duplicator:latest
+    container_name: duplicator_9403
+    environment:
+      - LISTEN_PORT=9403
+      - TARGET1=10.49.77.155:9521
+      - TARGET2=10.49.77.155:9522
+      - FORWARD_IF_RESP_TARGET=10.49.77.155:9523
+      - LOG_DIR=/logs
+    ports:
+      - "9403:9403"
+    volumes:
+      - /var/log/duplicator_logs/9403:/logs
