@@ -1,34 +1,21 @@
-# HTTP Duplicator
+# HTTP Duplicator (Güncellenmiş)
 
-Bu proje, gelen HTTP POST isteklerini belirlenen hedef sunuculara yönlendiren bir Flask tabanlı uygulamadır. İlk hedeften gelen başarılı yanıt isteğe bağlı olarak başka bir adrese de yönlendirilir.
+Bu proje, gelen HTTP POST isteklerini iki farklı hedefe yönlendirir. Eğer ilk hedef başarılı şekilde yanıt dönerse, bu yanıt doğrudan client'a response olarak iletilir. Artık üçüncü bir hedefe yeniden POST edilmez.
 
-## Özellikler
-
-- Çoklu hedeflere veri iletme
-- Yanıta göre üçüncü hedefe yönlendirme
-- `/healthz` endpoint'i ile sağlık kontrolü
-- Dışa log yazımı (container dışı)
-
-## Kurulum
-
-1. Docker image oluşturun:
+## Kullanım
 
 ```bash
-docker build -t http-duplicator .
+podman build -t http-duplicator .
+podman run -d \
+  -p 9401:9401 \
+  -e LISTEN_PORT=9401 \
+  -e TARGET1=10.49.77.153:9501 \
+  -e TARGET2=10.49.77.153:9502 \
+  -e LOG_DIR=/logs \
+  -v /var/log/duplicator_logs/9401:/logs:Z \
+  --name duplicator_9401 \
+  http-duplicator
 ```
-
-2. Docker Compose ile başlatın:
-
-```bash
-docker-compose up -d
-```
-
-## Parametreler
-
-- `LISTEN_PORT`: Container içi dinlenecek port
-- `TARGET1`, `TARGET2`: Hedef sunucular
-- `FORWARD_IF_RESP_TARGET`: İlk hedef başarılıysa yönlendirilecek adres
-- `LOG_DIR`: Logların yazılacağı dizin (host sistemden bağlanır)
 
 ## Sağlık Kontrolü
 
@@ -38,4 +25,4 @@ curl http://localhost:9401/healthz
 
 ## Loglar
 
-Container dışındaki dizine yazılır: `/var/log/duplicator_logs/<port>`
+Loglar host sistemde `/var/log/duplicator_logs/9401/duplicator.log` dosyasına yazılır.
