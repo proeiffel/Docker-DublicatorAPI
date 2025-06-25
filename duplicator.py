@@ -22,14 +22,14 @@ def handle_request():
     logging.info(f"📥 Gelen veri: {data}")
 
     try:
-        r1 = requests.post(f"http://{TARGET1}", data=data, timeout=2)
+        r1 = requests.post(TARGET1, data=data, timeout=2, verify=False)
         logging.info(f"➡️ {TARGET1} → Status: {r1.status_code}")
     except Exception as e:
         logging.error(f"🚨 {TARGET1} gönderim hatası: {e}")
         r1 = None
 
     try:
-        r2 = requests.post(f"http://{TARGET2}", data=data, timeout=2)
+        r2 = requests.post(TARGET2, data=data, timeout=2, verify=False)
         logging.info(f"➡️ {TARGET2} → Status: {r2.status_code}")
     except Exception as e:
         logging.error(f"🚨 {TARGET2} gönderim hatası: {e}")
