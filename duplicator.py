@@ -21,18 +21,20 @@ def handle_request():
     data = request.get_data()
     logging.info(f"📥 Gelen veri: {data}")
 
+    # TARGET1'e gönderim
     try:
-        r1 = requests.post(TARGET1, data=data, timeout=2, verify=False)
-        logging.info(f"➡️ {TARGET1} → Status: {r1.status_code}")
+        r1 = requests.post(TARGET1, data=data, timeout=2, verify=True)
+        logging.info(f"✅ TARGET1 ({TARGET1}) → Status: {r1.status_code}")
     except Exception as e:
-        logging.error(f"🚨 {TARGET1} gönderim hatası: {e}")
+        logging.error(f"❌ HATA - TARGET1 ({TARGET1}) → {type(e).__name__}: {e}")
         r1 = None
 
+    # TARGET2'ye gönderim
     try:
-        r2 = requests.post(TARGET2, data=data, timeout=2, verify=False)
-        logging.info(f"➡️ {TARGET2} → Status: {r2.status_code}")
+        r2 = requests.post(TARGET2, data=data, timeout=2, verify=True)
+        logging.info(f"✅ TARGET2 ({TARGET2}) → Status: {r2.status_code}")
     except Exception as e:
-        logging.error(f"🚨 {TARGET2} gönderim hatası: {e}")
+        logging.error(f"❌ HATA - TARGET2 ({TARGET2}) → {type(e).__name__}: {e}")
 
     if r1 and r1.status_code == 200:
         return (r1.content, r1.status_code, r1.headers.items())
